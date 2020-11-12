@@ -160,8 +160,8 @@ a heartbeat the task becomes <code>ORPHAN</code></p></li>
 <ul>
 <li><p>A worker appears and is <code>IDLE</code></p></li>
 <li><p>When running a task it is <code>BUSY</code></p></li>
-<li><p>If it recieves a <code>PAUSE</code> message it becomes <code>PAUSED</code> until it
-recieves a <code>RESUME</code> message</p></li>
+<li><p>If it receives a <code>PAUSE</code> message it becomes <code>PAUSED</code> until it
+receives a <code>RESUME</code> message</p></li>
 <li><p>If it exits cleanly (e.g., via a <code>STOP</code> message or a timeout) it
 becomes <code>EXITED</code></p></li>
 <li><p>If it crashes and was running a heartbeat, it becomes <code>LOST</code></p></li>
@@ -185,20 +185,20 @@ with "PONG"</p></li>
 terminal and log of the worker. Will respond with <code>OK</code> once the
 message has been printed.</p></li>
 <li><p><code>EVAL</code> (accepts a string or a quoted expression): Evaluate an
-arbitrary R expression on the worker. Repsonds with the value of
+arbitrary R expression on the worker. Responds with the value of
 this expression.</p></li>
 <li><p><code>STOP</code> (accepts a string to print as the worker exits, defaults
 to "BYE"): Tells the worker to stop.</p></li>
 <li><p><code>INFO</code> (no args): Returns information about the worker (versions
 of packages, hostname, pid, etc).</p></li>
 <li><p><code>PAUSE</code> (no args): Tells the worker to stop accepting tasks
-(until it recieves a <code>RESUME</code> message). Messages are processed
+(until it receives a <code>RESUME</code> message). Messages are processed
 as normal.</p></li>
 <li><p><code>RESUME</code> (no args): Tells a paused worker to resume accepting
 tasks.</p></li>
 <li><p><code>REFRESH</code> (no args): Tells the worker to rebuild their
 environment with the <code>create</code> method.</p></li>
-<li><p><code>TIMEOUT_SET</code> (accepts a number, represnting seconds): Updates
+<li><p><code>TIMEOUT_SET</code> (accepts a number, representing seconds): Updates
 the worker timeout - the length of time after which it will exit
 if it has not processed a task.</p></li>
 <li><p><code>TIMEOUT_GET</code> (no args): Tells the worker to respond with its
@@ -398,13 +398,13 @@ loop.</p></dd>
 </dl><p></div></p>
 <p><hr>
 <a id="method-lapply"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/lapply.html'>lapply()</a></code></h3>
-<p>Apply a function over a list of of data. This is
+<p>Apply a function over a list of data. This is
 equivalent to using <code>$enqueue()</code> over each element in the list.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
 <p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>lapply</span><span class='op'>(</span>
   <span class='va'>x</span>,
   <span class='va'>fun</span>,
   <span class='va'>...</span>,
-  DOTS <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dots <span class='op'>=</span> <span class='cn'>NULL</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -419,7 +419,7 @@ equivalent to using <code>$enqueue()</code> over each element in the list.</p><h
 
 <dt><code>...</code></dt><dd><p>Additional arguments to <code>fun</code></p></dd>
 
-<dt><code>DOTS</code></dt><dd><p>As an alternative to <code>...</code>, you can provide the dots
+<dt><code>dots</code></dt><dd><p>As an alternative to <code>...</code>, you can provide the dots
 as a list of additional arguments. This may be easier to program
 against.</p></dd>
 
@@ -448,7 +448,7 @@ be copied over rather than using their names if possible.</p><h4 class='hasAncho
   <span class='va'>x</span>,
   <span class='va'>fun</span>,
   <span class='va'>...</span>,
-  DOTS <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dots <span class='op'>=</span> <span class='cn'>NULL</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -463,7 +463,7 @@ be copied over rather than using their names if possible.</p><h4 class='hasAncho
 
 <dt><code>...</code></dt><dd><p>Additional arguments to <code>fun</code></p></dd>
 
-<dt><code>DOTS</code></dt><dd><p>As an alternative to <code>...</code>, you can provide the dots
+<dt><code>dots</code></dt><dd><p>As an alternative to <code>...</code>, you can provide the dots
 as a list of additional arguments. This may be easier to program
 against.</p></dd>
 
@@ -834,7 +834,7 @@ acknowledge the message and stop (only has an effect if <code>type</code>
 is <code>message</code>).</p></dd>
 
 <dt><code>time_poll</code></dt><dd><p>If <code>type</code> is <code>message</code> and <code>timeout</code> is greater
-than zero, this is the polling interval used beween redis calls.
+than zero, this is the polling interval used between redis calls.
 Increasing this reduces network load but decreases the ability
 to interrupt the process.</p></dd>
 
@@ -849,7 +849,7 @@ progress bar if in an interactive session.</p></dd>
 workers, and interacts with other parameters. The strategies used by
 the different values are:</p><ul>
 <li><p><code>message</code>, in which case a <code>STOP</code> message will be sent to the
-worker, which they will recieve after finishing any currently
+worker, which they will receive after finishing any currently
 running task (if <code>RUNNING</code>; <code>IDLE</code> workers will stop immediately).</p></li>
 <li><p><code>kill</code>, in which case a kill signal will be sent via the heartbeat
 (if the worker is using one). This will kill the worker even if
@@ -877,7 +877,7 @@ care otherwise.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
-<dt><code>worker_id</code></dt><dd><p>The worker for which the log is reqiured</p></dd>
+<dt><code>worker_id</code></dt><dd><p>The worker for which the log is required</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -904,7 +904,7 @@ killed with an interrupt.  The default should be good for most
 uses, but shorter values are used for debugging.</p></dd>
 
 <dt><code>timeout</code></dt><dd><p>Optional timeout to set for the worker.  This is
-(roughly) quivalent to issuing a <code>TIMEOUT_SET</code> message
+(roughly) equivalent to issuing a <code>TIMEOUT_SET</code> message
 after initialising the worker, except that it's guaranteed to be
 run by all workers.</p></dd>
 
@@ -941,7 +941,7 @@ be thrown).</p></dd>
 <p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Name of the configuration
 Report on worker "load" (the number of workers being used over
-time). Rertuns an object of class <code>worker_load</code>, for which a
+time). Reruns an object of class <code>worker_load</code>, for which a
 <code>mean</code> method exists (this method is a work in progress and the
 interface may change).</p></dd>
 
@@ -1025,11 +1025,11 @@ named by worker id.</p></dd>
 after retrieval</p></dd>
 
 <dt><code>timeout</code></dt><dd><p>Integer, representing seconds to wait until the
-response has been recieved. An error will be thrown if a
-response has not been recieved in this time.</p></dd>
+response has been received. An error will be thrown if a
+response has not been received in this time.</p></dd>
 
 <dt><code>time_poll</code></dt><dd><p>If <code>timeout</code> is greater
-than zero, this is the polling interval used beween redis calls.
+than zero, this is the polling interval used between redis calls.
 Increasing this reduces network load but increases the time that
 may be waited for.</p></dd>
 
@@ -1083,11 +1083,11 @@ named by worker id.</p></dd>
 after retrieval</p></dd>
 
 <dt><code>timeout</code></dt><dd><p>Integer, representing seconds to wait until the
-response has been recieved. An error will be thrown if a
-response has not been recieved in this time.</p></dd>
+response has been received. An error will be thrown if a
+response has not been received in this time.</p></dd>
 
 <dt><code>time_poll</code></dt><dd><p>If <code>timeout</code> is greater
-than zero, this is the polling interval used beween redis calls.
+than zero, this is the polling interval used between redis calls.
 Increasing this reduces network load but increases the time that
 may be waited for.</p></dd>
 

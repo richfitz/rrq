@@ -184,7 +184,7 @@ workers to come up.  Must be an integer, at least 1.</p></td>
 
     <p>Spawning multiple workers.  If <code>n</code> is greater than one,
 multiple workers will be spawned.  This happens in parallel so it
-does not take n times longer than spawing a single worker.</p>
+does not take n times longer than spawning a single worker.</p>
 <p>Beware that signals like Ctrl-C passed to <em>this</em> R instance
 can still propagate to the child processes and can result in them
 dying unexpectedly.  It is probably safer to start processes in a
