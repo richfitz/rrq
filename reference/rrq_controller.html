@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rrq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,7 +94,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mrc-ide/rrq/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -358,7 +358,12 @@ message to all workers to update their environment.</p></dd>
 <p><hr>
 <a id="method-enqueue"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>enqueue()</code></h3>
 <p>Queue an expression</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>enqueue</span><span class='op'>(</span><span class='va'>expr</span>, envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>, key_complete <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>enqueue</span><span class='op'>(</span>
+  <span class='va'>expr</span>,
+  envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  key_complete <span class='op'>=</span> <span class='cn'>NULL</span>,
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -373,11 +378,22 @@ the value of <code>a</code> to the worker along with the expression.</p></dd>
 task is complete. You can use this with <code>$task_wait</code> to efficiently
 wait for the task to complete (i.e., without using a busy loop).</p></dd>
 
+<dt><code>queue</code></dt><dd><p>The queue to add the task to; if not specified the
+"default" queue (which all workers listen to) will be
+used. If you have configured workers to listen to more than
+one queue you can specify that here. Be warned that if you
+push jobs onto a queue with no worker, it will queue forever.</p></dd>
+
 </dl><p></div></p>
 <p><hr>
 <a id="method-enqueue_"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>enqueue_()</code></h3>
 <p>Queue an expression</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>enqueue_</span><span class='op'>(</span><span class='va'>expr</span>, envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>, key_complete <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>enqueue_</span><span class='op'>(</span>
+  <span class='va'>expr</span>,
+  envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  key_complete <span class='op'>=</span> <span class='cn'>NULL</span>,
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -395,6 +411,12 @@ task is complete. You can use this in conjunction with something
 like <code>BLPOP</code> to wait until a task is complete without a busy (sleep)
 loop.</p></dd>
 
+<dt><code>queue</code></dt><dd><p>The queue to add the task to; if not specified the
+"default" queue (which all workers listen to) will be
+used. If you have configured workers to listen to more than
+one queue you can specify that here. Be warned that if you
+push jobs onto a queue with no worker, it will queue forever.</p></dd>
+
 </dl><p></div></p>
 <p><hr>
 <a id="method-lapply"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/lapply.html'>lapply()</a></code></h3>
@@ -406,6 +428,7 @@ equivalent to using <code>$enqueue()</code> over each element in the list.</p><h
   <span class='va'>...</span>,
   dots <span class='op'>=</span> <span class='cn'>NULL</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>,
   timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
   progress <span class='op'>=</span> <span class='cn'>NULL</span>
@@ -424,6 +447,9 @@ as a list of additional arguments. This may be easier to program
 against.</p></dd>
 
 <dt><code>envir</code></dt><dd><p>The environment to use to try and find the function</p></dd>
+
+<dt><code>queue</code></dt><dd><p>The queue to add the tasks to (see <code>$enqueue</code> for
+details).</p></dd>
 
 <dt><code>timeout</code></dt><dd><p>Optional timeout, in seconds, after which an
 error will be thrown if the task has not completed.</p></dd>
@@ -450,6 +476,7 @@ be copied over rather than using their names if possible.</p><h4 class='hasAncho
   <span class='va'>...</span>,
   dots <span class='op'>=</span> <span class='cn'>NULL</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>,
   timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
   progress <span class='op'>=</span> <span class='cn'>NULL</span>
@@ -468,6 +495,9 @@ as a list of additional arguments. This may be easier to program
 against.</p></dd>
 
 <dt><code>envir</code></dt><dd><p>The environment to use to try and find the function</p></dd>
+
+<dt><code>queue</code></dt><dd><p>The queue to add the tasks to (see <code>$enqueue</code> for
+details).</p></dd>
 
 <dt><code>timeout</code></dt><dd><p>Optional timeout, in seconds, after which an
 error will be thrown if the task has not completed. If a
@@ -552,7 +582,7 @@ all task ids known to this rrq controller is used.</p></dd>
 <p><hr>
 <a id="method-task_position"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>task_position()</code></h3>
 <p>Find the position of one or more tasks in the queue.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>task_position</span><span class='op'>(</span><span class='va'>task_ids</span>, missing <span class='op'>=</span> <span class='fl'>0L</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>task_position</span><span class='op'>(</span><span class='va'>task_ids</span>, missing <span class='op'>=</span> <span class='fl'>0L</span>, queue <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
@@ -562,6 +592,9 @@ all task ids known to this rrq controller is used.</p></dd>
 A task will take value <code>missing</code> if it is running, complete,
 errored etc and a positive integer if it is in the queue,
 indicating its position (with 1) being the next task to run.</p></dd>
+
+<dt><code>queue</code></dt><dd><p>The name of the queue to query (defaults to the
+"default" queue).</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -715,21 +748,36 @@ task_id and status e.g. Task 123 is not running (MISSING)</p>
 <a id="method-queue_length"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>queue_length()</code></h3>
 <p>Returns the number of tasks in the queue (waiting for
 an available worker).</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>queue_length</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>queue_length</span><span class='op'>(</span>queue <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>queue</code></dt><dd><p>The name of the queue to query (defaults to the
+"default" queue).</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-queue_list"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>queue_list()</code></h3>
 <p>Returns the keys in the task queue.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>queue_list</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>queue_list</span><span class='op'>(</span>queue <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>queue</code></dt><dd><p>The name of the queue to query (defaults to the
+"default" queue).</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-queue_remove"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>queue_remove()</code></h3>
 <p>Remove task ids from a queue.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>queue_remove</span><span class='op'>(</span><span class='va'>task_ids</span><span class='op'>)</span></pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>queue_remove</span><span class='op'>(</span><span class='va'>task_ids</span>, queue <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
 <p><div class="arguments"></p><dl>
 <dt><code>task_ids</code></dt><dd><p>Task ids to remove</p></dd>
+
+<dt><code>queue</code></dt><dd><p>The name of the queue to query (defaults to the
+"default" queue).</p></dd>
 
 </dl><p></div></p>
 <p><hr>
@@ -892,6 +940,7 @@ correspond to arguments to <a href='rrq_worker.html'>rrq_worker</a>.</p><h4 clas
   <span class='va'>name</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
   timeout <span class='op'>=</span> <span class='cn'>NULL</span>,
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>,
   heartbeat_period <span class='op'>=</span> <span class='cn'>NULL</span>,
   verbose <span class='op'>=</span> <span class='cn'>NULL</span>,
   overwrite <span class='op'>=</span> <span class='cn'>TRUE</span>
@@ -910,6 +959,13 @@ uses, but shorter values are used for debugging.</p></dd>
 (roughly) equivalent to issuing a <code>TIMEOUT_SET</code> message
 after initialising the worker, except that it's guaranteed to be
 run by all workers.</p></dd>
+
+<dt><code>queue</code></dt><dd><p>Optional character vector of queues to listen on
+for jobs. There is a default queue which is always listened
+on (called 'default'). You can specify additional names here
+and jobs put onto these queues with <code>$enqueue()</code> will have
+<em>higher</em> priority than the default. You can explicitly list
+the "default" queue (e.g., <code>queue = c("high", "default", "low")</code>) to set the position of the default queue.</p></dd>
 
 <dt><code>heartbeat_period</code></dt><dd><p>Optional period for the heartbeat.  If
 non-NULL then a heartbeat process will be started (using the

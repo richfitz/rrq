@@ -73,7 +73,7 @@ sit and poll a queue for jobs." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rrq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ sit and poll a queue for jobs." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -95,7 +95,7 @@ sit and poll a queue for jobs." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/mrc-ide/rrq/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -127,6 +127,7 @@ sit and poll a queue for jobs.</p>
   con <span class='op'>=</span> <span class='fu'>redux</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/redux/man/hiredis.html'>hiredis</a></span><span class='op'>(</span><span class='op'>)</span>,
   key_alive <span class='op'>=</span> <span class='cn'>NULL</span>,
   worker_name <span class='op'>=</span> <span class='cn'>NULL</span>,
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
   timeout <span class='op'>=</span> <span class='cn'>NULL</span>,
   heartbeat_period <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -154,6 +155,11 @@ worker is alive.</p></td>
       <th>worker_name</th>
       <td><p>Optional worker name.  If omitted, a random
 name will be created.</p></td>
+    </tr>
+    <tr>
+      <th>queue</th>
+      <td><p>Queues to listen on, listed in decreasing order of
+priority. If not given, we listen on the "default" queue.</p></td>
     </tr>
     <tr>
       <th>time_poll</th>
