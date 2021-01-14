@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rrq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
       </span>
     </div>
 
@@ -266,6 +266,7 @@ expected, so you can use the names directly:</p><pre><span class='va'>b</span> <
 <li><p><a href='#method-task_progress'><code>rrq_controller_$task_progress()</code></a></p></li>
 <li><p><a href='#method-task_overview'><code>rrq_controller_$task_overview()</code></a></p></li>
 <li><p><a href='#method-task_position'><code>rrq_controller_$task_position()</code></a></p></li>
+<li><p><a href='#method-task_preceeding'><code>rrq_controller_$task_preceeding()</code></a></p></li>
 <li><p><a href='#method-task_result'><code>rrq_controller_$task_result()</code></a></p></li>
 <li><p><a href='#method-tasks_result'><code>rrq_controller_$tasks_result()</code></a></p></li>
 <li><p><a href='#method-task_wait'><code>rrq_controller_$task_wait()</code></a></p></li>
@@ -592,6 +593,22 @@ all task ids known to this rrq controller is used.</p></dd>
 A task will take value <code>missing</code> if it is running, complete,
 errored etc and a positive integer if it is in the queue,
 indicating its position (with 1) being the next task to run.</p></dd>
+
+<dt><code>queue</code></dt><dd><p>The name of the queue to query (defaults to the
+"default" queue).</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-task_preceeding"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>task_preceeding()</code></h3>
+<p>List the tasks in front of <code>task_id</code> in the queue.
+If the task is missing from the queue this will return NULL. If
+the task is next in the queue this will return an empty character
+vector.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>rrq_controller_</span><span class='op'>$</span><span class='fu'>task_preceeding</span><span class='op'>(</span><span class='va'>task_id</span>, queue <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>task_id</code></dt><dd><p>Task to find the position for.</p></dd>
 
 <dt><code>queue</code></dt><dd><p>The name of the queue to query (defaults to the
 "default" queue).</p></dd>
