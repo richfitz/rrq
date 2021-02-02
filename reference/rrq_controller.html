@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rrq</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.13</span>
       </span>
     </div>
 
@@ -363,7 +363,8 @@ message to all workers to update their environment.</p></dd>
   <span class='va'>expr</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   key_complete <span class='op'>=</span> <span class='cn'>NULL</span>,
-  queue <span class='op'>=</span> <span class='cn'>NULL</span>
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>,
+  separate_process <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
@@ -385,6 +386,14 @@ used. If you have configured workers to listen to more than
 one queue you can specify that here. Be warned that if you
 push jobs onto a queue with no worker, it will queue forever.</p></dd>
 
+<dt><code>separate_process</code></dt><dd><p>Logical, indicating if the task should be
+run in a separate process on the worker. If <code>TRUE</code>, then the
+worker runs the task in a separate process using the <code>callr</code>
+package. This means that the worker environment is completely
+clean, subsequent runs are not affected by preceeding ones.
+The downside of this approach is a considerable overhead in
+starting the extenal process and transferring data back.</p></dd>
+
 </dl><p></div></p>
 <p><hr>
 <a id="method-enqueue_"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>enqueue_()</code></h3>
@@ -393,7 +402,8 @@ push jobs onto a queue with no worker, it will queue forever.</p></dd>
   <span class='va'>expr</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   key_complete <span class='op'>=</span> <span class='cn'>NULL</span>,
-  queue <span class='op'>=</span> <span class='cn'>NULL</span>
+  queue <span class='op'>=</span> <span class='cn'>NULL</span>,
+  separate_process <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre><p></div></p>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
@@ -418,6 +428,10 @@ used. If you have configured workers to listen to more than
 one queue you can specify that here. Be warned that if you
 push jobs onto a queue with no worker, it will queue forever.</p></dd>
 
+<dt><code>separate_process</code></dt><dd><p>Logical, indicating if the task should be
+run in a separate process on the worker (see <code>$enqueue</code> for
+details).</p></dd>
+
 </dl><p></div></p>
 <p><hr>
 <a id="method-lapply"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/lapply.html'>lapply()</a></code></h3>
@@ -430,6 +444,7 @@ equivalent to using <code>$enqueue()</code> over each element in the list.</p><h
   dots <span class='op'>=</span> <span class='cn'>NULL</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   queue <span class='op'>=</span> <span class='cn'>NULL</span>,
+  separate_process <span class='op'>=</span> <span class='cn'>FALSE</span>,
   timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
   progress <span class='op'>=</span> <span class='cn'>NULL</span>
@@ -450,6 +465,10 @@ against.</p></dd>
 <dt><code>envir</code></dt><dd><p>The environment to use to try and find the function</p></dd>
 
 <dt><code>queue</code></dt><dd><p>The queue to add the tasks to (see <code>$enqueue</code> for
+details).</p></dd>
+
+<dt><code>separate_process</code></dt><dd><p>Logical, indicating if the task should be
+run in a separate process on the worker (see <code>$enqueue</code> for
 details).</p></dd>
 
 <dt><code>timeout</code></dt><dd><p>Optional timeout, in seconds, after which an
@@ -478,6 +497,7 @@ be copied over rather than using their names if possible.</p><h4 class='hasAncho
   dots <span class='op'>=</span> <span class='cn'>NULL</span>,
   envir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span>,
   queue <span class='op'>=</span> <span class='cn'>NULL</span>,
+  separate_process <span class='op'>=</span> <span class='cn'>FALSE</span>,
   timeout <span class='op'>=</span> <span class='cn'>Inf</span>,
   time_poll <span class='op'>=</span> <span class='cn'>NULL</span>,
   progress <span class='op'>=</span> <span class='cn'>NULL</span>
@@ -498,6 +518,10 @@ against.</p></dd>
 <dt><code>envir</code></dt><dd><p>The environment to use to try and find the function</p></dd>
 
 <dt><code>queue</code></dt><dd><p>The queue to add the tasks to (see <code>$enqueue</code> for
+details).</p></dd>
+
+<dt><code>separate_process</code></dt><dd><p>Logical, indicating if the task should be
+run in a separate process on the worker (see <code>$enqueue</code> for
 details).</p></dd>
 
 <dt><code>timeout</code></dt><dd><p>Optional timeout, in seconds, after which an
